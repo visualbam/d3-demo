@@ -1,6 +1,5 @@
 <template>
     <div id="app">
-        <h1>Poop world!</h1>
         <div id="chart-area"></div>
     </div>
 </template>
@@ -16,9 +15,9 @@
             HelloWorld
         },
         mounted() {
-            let margin = { left:80, right:20, top:50, bottom:100 };
+            let margin = { left: 80, right: 20, top: 50, bottom: 100 };
 
-            let width = 600 - margin.left - margin.right,
+            let width = 850 - margin.left - margin.right,
                 height = 400 - margin.top - margin.bottom;
 
             let g = d3.select('#chart-area')
@@ -33,7 +32,7 @@
                 .attr('x', width / 2)
                 .attr('font-size', '20px')
                 .attr('text-anchor', 'middle')
-                .text('Month');
+                    .text('Month');
 
             g.append('text')
                 .attr('y', - 60)
@@ -41,9 +40,9 @@
                 .attr('font-size', '20px')
                 .attr('text-anchor', 'middle')
                 .attr('transform', 'rotate(-90)')
-                .text('Revenue');
+                    .text('Revenue');
 
-
+            // X Scale
             let x = d3.scaleBand()
                 .domain(revenue.map(d => d.month))
                 .range([0, width])
@@ -51,7 +50,7 @@
 
             // Y Scale
             let y = d3.scaleLinear()
-                .domain([0, d3.max(revenue, function(r) { return r.revenue })])
+                .domain([0, d3.max(revenue, r => r.revenue)])
                 .range([height, 0]);
 
             // X Axis
@@ -59,24 +58,24 @@
             g.append('g')
                 .attr('class', 'x axis')
                 .attr('transform', `translate(0, ${height})`)
-                .call(xAxisCall);
+                    .call(xAxisCall);
 
             // Y Axis
             let yAxisCall = d3.axisLeft(y).tickFormat(d => `$${d}`);
             g.append('g')
                 .attr('class', 'y axis')
-                .call(yAxisCall);
+                    .call(yAxisCall);
 
             let rects = g.selectAll('rect')
                 .data(revenue);
 
             rects.enter()
                 .append('rect')
-                .attr('y', d => y(d.revenue))
-                .attr('x', d => x(d.month))
-                .attr('height', function(d){ return height - y(d.revenue); })
-                .attr('width', x.bandwidth)
-                .attr('fill', 'pink');
+                    .attr('y', d => y(d.revenue))
+                    .attr('x', d => x(d.month))
+                    .attr('height', d => height - y(d.revenue))
+                    .attr('width', x.bandwidth)
+                    .attr('fill', 'pink');
         }
     }
 </script>
