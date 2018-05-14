@@ -18,7 +18,7 @@
             let margin = { left: 80, right: 20, top: 50, bottom: 100 };
 
             let width = 850 - margin.left - margin.right,
-                height = 400 - margin.top - margin.bottom;
+                height = 600 - margin.top - margin.bottom;
 
             let g = d3.select('#chart-area')
                 .append('svg')
@@ -27,12 +27,16 @@
                 .append('g')
                     .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
+            g.append('g')
+                .attr("class", "grid")
+                .attr("transform", "translate(0," + height + ")");
+
             g.append('text')
                 .attr('y', height + 50)
                 .attr('x', width / 2)
                 .attr('font-size', '20px')
                 .attr('text-anchor', 'middle')
-                    .text('Month');
+                    .text('STANDARD DEVIATION 3 YR %');
 
             g.append('text')
                 .attr('y', - 60)
@@ -40,7 +44,7 @@
                 .attr('font-size', '20px')
                 .attr('text-anchor', 'middle')
                 .attr('transform', 'rotate(-90)')
-                    .text('Revenue');
+                    .text('RETURN 3 YR %');
 
             // X Scale
             let x = d3.scaleBand()
@@ -66,6 +70,21 @@
                 .attr('class', 'y axis')
                     .call(yAxisCall);
 
+            g.append("g")
+                .attr("class", "grid")
+                .attr("transform", "translate(0," + height + ")")
+                .call(make_x_gridlines()
+                    .tickSize(-height)
+                    .tickFormat("")
+                );
+
+            g.append("g")
+                .attr("class", "grid")
+                .call(make_y_gridlines()
+                    .tickSize(-width)
+                    .tickFormat("")
+                );
+
             let rects = g.selectAll('rect')
                 .data(revenue);
 
@@ -76,6 +95,16 @@
                     .attr('height', d => height - y(d.revenue))
                     .attr('width', x.bandwidth)
                     .attr('fill', 'pink');
+
+            function make_x_gridlines() {
+                return d3.axisBottom(x)
+                    .ticks(5)
+            }
+
+            function make_y_gridlines() {
+                return d3.axisLeft(y)
+                    .ticks(5)
+            }
         }
     }
 </script>
@@ -88,5 +117,21 @@
         text-align: center;
         color: #2c3e50;
         margin-top: 60px;
+    }
+
+    .line {
+        fill: none;
+        stroke: steelblue;
+        stroke-width: 2px;
+    }
+
+    .grid line {
+        stroke: lightgrey;
+        stroke-opacity: 0.7;
+        shape-rendering: crispEdges;
+    }
+
+    .grid path {
+        stroke-width: 0;
     }
 </style>
