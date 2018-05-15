@@ -14,7 +14,7 @@
         Resources
         ----------------
         List of SVG Elements: https://developer.mozilla.org/en-US/docs/Web/SVG/Element
-
+        List of SVG Attributes: https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute
 
         Steps
         -----------------
