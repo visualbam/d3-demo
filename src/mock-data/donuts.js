@@ -9,6 +9,6 @@ export const donuts = [
     { key: 'Cream', value: 16 },
     { key: 'Cruller', value: 30 },
     { key: 'Eclaire', value: 8 },
-    { key: 'Fitter', value: 17 },
+    { key: 'Fritter', value: 17 },
     { key: 'Bearclaw', value: 21 },
 ];

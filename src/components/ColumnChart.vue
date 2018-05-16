@@ -66,12 +66,12 @@
 
             // Grid Lines
             g.append("g")
-                .attr('class', 'grid')
+                .attr('class', 'gridline')
                 .attr('transform', 'translate(0,' + height + ')')
                 .call(d3.axisBottom(x).tickSize(-height).tickFormat(''));
 
             g.append('g')
-                .attr('class', 'grid')
+                .attr('class', 'gridline')
                 .call(d3.axisLeft(y).tickSize(-width).tickFormat(''));
 
             // Bars
@@ -90,13 +90,13 @@
 </script>
 
 <style>
-    .grid line {
+    .gridline line {
         stroke: lightgrey;
         stroke-opacity: 0.7;
         shape-rendering: crispEdges;
     }
 
-    .grid path {
+    .gridline path {
         stroke-width: 0;
     }
 </style>

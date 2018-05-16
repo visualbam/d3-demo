@@ -1,18 +1,18 @@
 <template>
     <div id="app">
-        <Bargraph></Bargraph>
+        <BarGraph></BarGraph>
         <ColumnChart></ColumnChart>
     </div>
 </template>
 
 <script>
     import ColumnChart from './components/ColumnChart.vue';
-    import Bargraph from './components/Bargraph.vue';
+    import BarGraph from './components/BarGraph.vue';
 
     export default {
         name: 'app',
         components: {
-            Bargraph,
+            BarGraph,
             ColumnChart
         }
     }
