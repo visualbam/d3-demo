@@ -38,7 +38,7 @@
                 let h = 450;
 
                 // Configure chart margins
-                let margin = { top: 40, bottom: 40, left: 60, right: 20 };
+                let margin = { top: 40, bottom: 100, left: 80, right: 20 };
 
                 // Configure chart dimensions based on data in relation to the margins
                 let width = w - margin.left - margin.right;
@@ -83,6 +83,10 @@
                     .tickSize(-width, 0, 0)
                     .tickFormat('');
 
+                let xGridLines = d3.axisBottom(xScale)
+                    .tickSize(-height, 0, 0)
+                    .tickFormat('');
+
             // SVG Creation -------------------------------------
 
                 let svg = d3.select('.bargraph').append('svg')
@@ -98,12 +102,28 @@
 
             // Create Plot ---------------------------------------
 
-            plot.call(chart, { data: data });
+            plot.call(chart, {
+                data: data,
+                axis: {
+                    x: xAxis,
+                    y: yAxis
+                },
+                gridLines: {
+                    x: xGridLines,
+                    y: yGridLines
+                }
+            });
 
             function plot(params) {
                 // Append group tp svg
                 this.append('g')
-                    .call(yGridLines)
+                    .call(params.gridLines.y)
+                    .classed('gridline', true);
+
+                // X axis gridlines need to be translated
+                this.append('g')
+                    .attr('transform', 'translate(0,' + height + ')')
+                    .call(params.gridLines.x)
                     .classed('gridline', true);
 
                 // Create bars
@@ -153,18 +173,31 @@
                 this.append('g')
                     .classed('x axis', true)
                     .attr('transform', 'translate(' + 0 +', '+ height + ')')
-                    .call(xAxis);
+                    .call(params.axis.x);
 
                 // Y axis doesn't need  to be transformed
                 this.append('g')
                     .classed('y axis', true)
-                    .call(yAxis);
+                    .call(params.axis.y);
 
                 this.select('.y.axis')
                     .append('text')
                     .attr('x', 0)
                     .attr('y', 0)
+                    .attr('text-anchor', 'middle')
+                    .attr('fill', 'black')
+                    // Translate label to be positioned at half the height of the chart (middle) & rotate 90 degrees
+                    .attr('transform', 'translate(-50, ' + height / 2 + ') rotate(-90)')
                     .text('Units sold');
+
+                this.select('.x.axis')
+                    .append('text')
+                    .attr('x', 0)
+                    .attr('y', 0)
+                    .attr('text-anchor', 'middle')
+                    .attr('transform', 'translate('+ width / 2 +', 50)')
+                    .attr('fill', 'black')
+                    .text('Donut Type')
             }
         }
     }
