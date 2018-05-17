@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <h1>Bar Graph</h1>
-        <div class="bargraph"></div>
+        <div class="bar-graph"></div>
     </div>
 </template>
 
@@ -78,6 +78,7 @@
                 let yAxis = d3.axisLeft(yScale);
 
             // Create Grid lines --------------------------------
+
                 // By default the ticks are placed right to left, use negative width to do left to right
                 let yGridLines = d3.axisLeft(yScale)
                     .tickSize(-width, 0, 0)
@@ -89,7 +90,7 @@
 
             // SVG Creation -------------------------------------
 
-                let svg = d3.select('.bargraph').append('svg')
+                let svg = d3.select('.bar-graph').append('svg')
                     .attr('id', 'chart')
                     .attr('width', w)
                     .attr('height', h);
@@ -204,18 +205,5 @@
 </script>
 
 <style>
-    svg {
-        border: 1px solid #efefef;
-    }
 
-    .bar {
-        fill: lightblue;
-        shape-rendering: crispEdges;
-    }
-
-    .bar-label {
-        fill: black;
-        font-size: 12px;
-        text-anchor: middle;
-    }
 </style>

@@ -90,13 +90,5 @@
 </script>
 
 <style>
-    .gridline line {
-        stroke: lightgrey;
-        stroke-opacity: 0.7;
-        shape-rendering: crispEdges;
-    }
 
-    .gridline path {
-        stroke-width: 0;
-    }
 </style>
