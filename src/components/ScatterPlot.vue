@@ -29,12 +29,11 @@
         name: "ScatterPlot",
         mounted() {
             let data = investments;
-            console.log(data);
 
             // Chart dimensions ----------------------------------------------------------------------------------------
 
             let w = 800;
-            let h = 300;
+            let h = 250;
 
             // Configure chart margins ---------------------------------------------------------------------------------
 
@@ -48,16 +47,12 @@
             // Create Chart Scale --------------------------------------------------------------------------------------
 
             let xScale = d3.scaleLinear()
-                .domain([0, d3.max(data, function(d) {
-                    return d.StandardDeviatrionThreeYear;
-                })])
+                .domain([0, d3.max(data, function(d) { return d.StandardDeviatrionThreeYear; })])
                 .range([0, width])
                 .nice();
 
             let yScale = d3.scaleLinear()
-                .domain([0, d3.max(data, function (d) {
-                    return d.ThreeYearReturn;
-                })])
+                .domain([0, d3.max(data, function(d) { return d.ThreeYearReturn })])
                 .range([height, 0])
                 .nice();
 
@@ -70,28 +65,21 @@
             let ordinalColorScale = d3.scaleOrdinal(d3.schemeCategory10);
 
             // Create Axis ---------------------------------------------------------------------------------------------
-            let maxReturnValue = d3.max(data, function(d) { return d.ThreeYearReturn });
             let formatAxis = d3.format('.0f');
-            let xAxis = d3.axisBottom(xScale).tickSize(0).tickPadding(10).tickFormat(formatAxis)
-                .tickValues(d3.range(0, maxReturnValue, (maxReturnValue + 1) / 9).concat(yScale.domain()));
-
-            let yAxis = d3.axisLeft(yScale).tickSize(0).tickPadding(10).tickFormat(formatAxis)
-                .tickValues(d3.range(0, maxReturnValue, maxReturnValue / 6).concat(yScale.domain()));
-
-            // let yAxis = d3.axisLeft(yScale).tickSize(0).tickPadding(10).tickValues(d3.range(0, d3.max(data, function (d) {
-            //     return Math.ceil(d.ThreeYearReturn);
-            // }), 3));
+            let xAxis = d3.axisBottom(xScale).tickSize(0).tickPadding(15).tickFormat(formatAxis).ticks(10);
+            let yAxis = d3.axisLeft(yScale).tickSize(0).tickPadding(15).tickFormat(formatAxis).ticks(7);
 
             // Create Grid lines ---------------------------------------------------------------------------------------
 
             let yGridLines = d3.axisLeft(yScale)
                 .tickSize(-width, 0, 0)
                 .tickFormat('')
-                .tickValues(d3.range(0, maxReturnValue, (maxReturnValue + 1) / 6).concat(yScale.domain()));
+                .ticks(7);
 
             let xGridLines = d3.axisBottom(xScale)
                 .tickSize(-height, 0, 0)
-                .tickFormat('');
+                .tickFormat('')
+                .ticks(10);
 
             // SVG Creation --------------------------------------------------------------------------------------------
 
@@ -122,6 +110,23 @@
                 }
             });
 
+            function ColorLuminance(hex, lum) {
+                // validate hex string
+                hex = String(hex).replace(/[^0-9a-f]/gi, '');
+                if (hex.length < 6) { hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2]; }
+                lum = lum || 0;
+
+                // convert to decimal and change luminosity
+                var rgb = "#", c, i;
+                for (i = 0; i < 3; i++) {
+                    c = parseInt(hex.substr(i*2,2), 16);
+                    c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
+                    rgb += ("00"+c).substr(c.length);
+                }
+
+                return rgb;
+            }
+
             function plot(params) {
                 // enter()
                 this.selectAll('.point')
@@ -135,6 +140,10 @@
                     .attr('r', 10)
                     .attr('fill', function(d) {
                         return d.Color;
+                    })
+                    .attr('stroke-width', 1)
+                    .attr('stroke', function(d) {
+                        return ColorLuminance(d.Color, -0.25);
                     })
                     .attr('cx', function(d) {
                         return params.scale.x(d.StandardDeviatrionThreeYear);
@@ -160,18 +169,20 @@
 
                 this.append('g')
                     .classed('x axis', true)
+                    .classed('heavy', true)
                     .attr('transform', 'translate(' + 0 + ', ' + height + ')')
                     .call(params.axis.x);
 
                 this.append('g')
                     .classed('y axis', true)
+                    .classed('heavy', true)
                     .call(params.axis.y);
 
                 this.select('.y.axis')
                     .append('text')
                     .attr('x', 0)
                     .attr('y', -10)
-                    .attr('class', 'heavy')
+                    .classed('heavy', true)
                     .attr('text-anchor', 'middle')
                     .attr('fill', 'black')
                     // Translate label to be positioned at half the height of the chart (middle) & rotate 90 degrees
@@ -182,9 +193,9 @@
                     .append('text')
                     .attr('x', 0)
                     .attr('y', 0)
-                    .attr('class', 'heavy')
+                    .classed('heavy', true)
                     .attr('text-anchor', 'middle')
-                    .attr('transform', 'translate(' + width / 2 + ', 40)')
+                    .attr('transform', 'translate(' + width / 2 + ', 45)')
                     .attr('fill', 'black')
                     .text('STANDARD DEVIATION 3 YR %')
             }

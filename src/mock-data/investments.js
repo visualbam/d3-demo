@@ -43,7 +43,7 @@ function createInvestmentList(numberOfInvestments) {
 
 function randomNum() {
     let precision = 100; // 2 decimals
-    return Math.floor(Math.random() * (300 * precision - precision) + precision) / (precision);
+    return Math.floor(Math.random() * (100 * precision - precision) + precision) / (precision);
 }
 
 function randomWholeNum() {

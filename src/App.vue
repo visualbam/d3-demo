@@ -38,15 +38,14 @@
         margin: 6rem 0;
     }
 
-    svg {
-        border: 1px solid #efefef;
-    }
-
-    .small { font: italic 13px sans-serif; }
     .heavy { font: bold 11px sans-serif;  }
 
     .y {
         letter-spacing: 1px;
+    }
+
+    .y.axis, .x.axis {
+        stroke-width: 2px;
     }
 
     .bar {
